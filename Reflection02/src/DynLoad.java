@@ -1,4 +1,7 @@
-
+/**
+ * Эта программа динамически загружает различные реализации
+ * интерфейса I, классы реализации берутся из другого проекта.
+ */
 public class DynLoad {
   @SuppressWarnings("unchecked")
   public static void main(String[] args) {

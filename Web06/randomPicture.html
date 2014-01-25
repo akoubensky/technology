@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Language" content="ru"/>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+  <title>Загрузка случайной картинки</title>
+</head>
+
+<body>
+  <h1>Случайная картинка, выбранная из десяти генератором случайных чисел</h1>
+
+  <h2>Сегодня мы выбираем эту картинку:</h2>
+
+  <p>
+    <script type="text/javascript">
+    <!--
+      var rand = Math.random(); // range: 0-1
+      var numb = Math.floor(rand*10);
+      if (numb == 10) numb = 9;
+      var image = "images/image" + numb + ".jpg";
+      var insert = "<img width=\"30%\" src=\"" + image + "\" alt=\"Фотография цветочка\"/>";
+      document.write(insert); 
+    //-->
+    </script>
+  </p>
+
+</body>
+</html>

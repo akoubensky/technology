@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Language" content="ru"/>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+  <title>Программируемый запрос</title>
+  <style type="text/css">
+    body { font-family: Arial, sans-serif; font-size: large; }
+  </style>
+  <script>
+    function sendRequest() {
+      var request = new XMLHttpRequest();
+      request.onreadystatechange = function() { processResponse(request); }
+      request.open('GET', document.getElementById('url').value, false);
+      request.send();
+    }
+    
+    function processResponse(request) {
+      if (request.readyState == 4) {
+        document.getElementById('response').value +=
+            'readyState = ' + request.readyState +
+            '; status = ' + request.status + 
+            ' (' + request.statusText + ')\n' +
+            request.responseText + '\n';
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <p>
+    <label for="url">URL:&nbsp;</label>
+    <input id="url" type="text"/>
+  </p>
+  <p>
+    <button onclick="sendRequest();">Отправить запрос</button>
+  </p>
+  <p>
+    <label>Ваш ответ:&nbsp;</label>
+  </p>
+  <p>
+    <textarea id="response" cols="30" rows="10"></textarea>
+  </p>
+</body>
+</html>

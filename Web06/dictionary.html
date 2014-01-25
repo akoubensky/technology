@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  p { font-family: "Courier New", Arial, Sans-serif; font-size: large; }
+</style>
+<title>Dictionary</title>
+<script type="text/javascript">
+    <!--
+    /**
+     * Аналог HashMap
+     */
+    function MyDictionary() {}
+
+    /**
+     * Запись/замена ассоциативной пары
+     */
+    MyDictionary.prototype.put = function (key, value) {
+      var oldValue = this[key];
+      this[key] = value;
+      return oldValue;
+    };
+
+    /**
+     * Взять значение по ключу
+     */
+    MyDictionary.prototype.get = function (key) {
+      return this[key];
+    };
+    
+    /**
+     * Удалить значение с заданным ключом
+     */
+    MyDictionary.prototype.remove = function (key) {
+      delete this[key];
+    };
+    
+    /**
+     * Функция вывода всех имен и значений атрибутов заданного объекта.
+     */
+    function attributes(obj) {
+      var attrs = [];
+      for (var a in obj) attrs.push(a + ": " + obj[a]);
+      return attrs.join("<br/>");
+    }
+    -->
+</script>
+</head>
+<body>
+  <h2>Dictionary</h2>
+  <p>
+    <script>
+    <!--
+      var myDict = new MyDictionary();
+      myDict.put("aaa", "letters");
+      myDict.put("+++", "plus");
+      myDict.put("abc", "alfa");
+      myDict.remove("aaa");
+      document.write(attributes(myDict));
+    -->
+    </script>
+  </p>
+  <hr/>
+  <p>
+    <script>
+      <!--
+      var arr = new Array(4,3,2,1);
+      document.write(attributes(arr));
+      -->
+    </script>
+  </p>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Javascript objects demo</title>
+  <style>
+    p { font-family: Arial, sans-serif; font-size: large; }
+  </style>
+</head>
+<body>
+<script>
+  function MyNewType() {}
+  MyNewType.prototype = { message: "start",
+                          func: function() { return this.message; }};
+  var obj = new MyNewType();
+  document.write("<p>Message: " + obj.message + "</p>");
+  document.write("<p>Func message: " + obj.func() + "</p>");
+</script>
+</body>

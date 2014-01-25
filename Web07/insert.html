@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Language" content="ru"/>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+  <title>Динамическая вставка параграфа</title>
+  <script type="text/javascript">
+    function insertNewParagraph() {
+      var pNode = document.getElementById('para');
+      var newPara = document.createElement('p');
+      var newText = document.createTextNode('А это динамически добавленный параграф!');
+      newPara.appendChild(newText);
+      pNode.parentNode.insertBefore(newPara, pNode.nextSibling);
+    }
+  </script>
+  <style>
+    p, li { font-family: "Courier New", Arial, Sans-serif; font-size: large; }
+  </style>
+</head>
+
+<body>
+   <h1>Это заголовок</h1>
+   <p id="para" onclick="insertNewParagraph();">
+      Это - параграф, после которого будем добавлять новые.
+   </p>
+   <ul>
+     <li>элемент списка</li>
+     <li>еще один элемент</li>
+     <li>третий элемент списка</li>
+   </ul>
+</body>
+</html>

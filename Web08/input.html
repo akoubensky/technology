@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Language" content="ru"/>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+  <title>Элементы ввода</title>
+  <style type="text/css">
+    body { font-family: sans-serif; font-size: large; position: relative; left: 5em; }
+    input, label { font-family: 'courier new'; }
+  </style>
+</head>
+
+<body>
+   <h1>Это элементы ввода</h1>
+   <table border="0" cellpadding="5px;">
+   <tr>
+     <td><input type="text" value="1234" size="12" maxLength="10"/></td>
+     <td>Обычное поле ввода (value=&quot;1234&quot; size=&quot;12&quot; maxLength=&quot;10&quot;)</td>
+   </tr>
+   <tr>
+     <td><input type="password" value="1234" size="10" maxLength="10"/></td>
+     <td>Поле ввода пароля (value=&quot;1234&quot; size=&quot;10&quot; maxLength=&quot;10&quot;)</td>
+   </tr>
+   <tr>
+     <td><input type="button" value="Нажать!"/></td>
+     <td>Кнопка (value=&quot;Нажать!&quot;)</td>
+   </tr>
+   <tr>
+     <td><input type="checkbox" checked="true" id="myCheck"/>
+     <label for="myCheck">Это надпись на флажке</label></td>
+     <td>Флажок (checked=&quot;true&quot; id=&quot;myCheck&quot;) и 
+     метка (&lt;label for=&quot;myCheck&quot;&gt;Это надпись на флажке&lt;/label&gt;)</td>
+   </tr>
+   <tr>
+     <td><label for="madrid">Мадрид</label>
+         <input type="radio" name="radioGroup" id="madrid"/><br/>
+         <label for="roma">Рим</label>
+         <input type="radio" name="radioGroup" id="roma"/><br/>
+         <label for="paris">Париж</label>
+         <input type="radio" name="radioGroup" id="paris" checked="true"/><br/>
+         <label for="london">Лондон</label>
+         <input type="radio" name="radioGroup" id="london"/></td>
+     <td>Элементы выбора (name=&quot;radioGroup&quot;) с метками</td>
+   </tr>
+   <tr>
+     <td></td>
+     <td><label>Это просто метка &lt;label&gt; сама по себе</label></td>
+   </tr>
+ </table>
+ <p>
+   <fieldset style="width: 50%;">
+     <legend>Это группа элементов ввода</legend>
+     <input type="radio" name="radio-group" id="radio-1"/>
+     <label for="radio-1">Надпись 1</label><br/>
+     <input type="radio" name="radio-group" id="radio-2"/>
+     <label for="radio-2">Надпись 2</label><br/>
+     <input type="radio" name="radio-group" id="radio-3"/>
+     <label for="radio-3">Надпись 3</label>
+   </fieldset>
+</p>
+</body>
+</html>

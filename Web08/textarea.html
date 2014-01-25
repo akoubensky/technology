@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Language" content="ru"/>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+  <title>Работа с текстом</title>
+  <style>
+    textarea, button { font-family: Arial, Sans-serif; font-size: large; }
+  </style>
+  <script type="text/javascript">
+    function selectText() {
+      document.getElementById('myText').select();
+    }
+
+    function changeProperty(butt, prop) {
+      if (typeof(butt.flag) == 'undefined') butt.flag = 1;
+      var ta = document.getElementById('myText');
+      ta[prop] = butt.flag == 1;
+      butt.flag = 1 - butt.flag;
+    }
+  </script>
+</head>
+
+<body>
+   <h1>Это область ввода текста</h1>
+   <p>
+     <textarea cols="30" rows="4" id="myText">Сюда вводим текст.</textarea>
+   </p>
+   <p>
+     <button onclick="changeProperty(this, 'disabled');">Disable/Enable</button>
+     <button onclick="changeProperty(this, 'readOnly');">ReadOnly yes/no</button>
+     <button onclick="selectText();">Select</button>
+     <button onclick="alert(document.getElementById('myText').value);">Покажи текст</button>
+   </p>
+</body>
+</html>

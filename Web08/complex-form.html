@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Language" content="ru"/>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+  <title>Форма ввода посложнее</title>
+</head>
+
+<body style="font-family: arial, sans-serif; font-size: large;">
+
+<h1>Анкета потенциального работника</h1>
+
+<form action="http://jobserver.ru/anketa" method="POST">
+  <fieldset>
+    <legend>Введите анкетные данные</legend>
+    <label>Ваше имя: <input type="text" name="name"/></label><br/>
+    <label>Запрашиваемая должность:
+      <select name="job"><option value="core">Программист</option>
+              <option value="web">Web-дизайнер</option>
+              <option value="lamer">Крутой спец</option>
+      </select></label><br/>
+    <label>Квалификация:</label><br/>
+    <label><input type="radio" value="0" name="qual">Новичок</label><br/>
+    <label><input type="radio" value="1" name="qual">Профи</label><br/>
+    <label><input type="radio" value="5" name="qual">Эксперт</label><br/>
+    <label>Хочу получать от <input type="text" name="min"/></label><br/>
+    <input type="submit"/>
+  </fieldset>
+</form>
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Language" content="ru"/>
+  <meta http-equiv="Content-Type" content="text/html;charset=Cp1251"/>
+  <title>Коллапсирующие границы таблицы</title>
+  <style type="text/css">
+    body { font-family: sans-serif; }
+    table { border: 1px solid black; }
+    th { font-size: larger; background-color: yellow; border: 1px solid black; }
+    td { color: blue; border: 1px solid; }
+    caption { font-size: 16pt; font-style: italic; }
+  </style>
+  <script>
+    function BorderCollapse() {
+      var table = document.getElementsByTagName('table')[0];
+      table.style.borderCollapse = table.style.borderCollapse ? '' : 'collapse';
+    }
+  </script>
+</head>
+
+<body>
+   <h1>Это пример таблицы</h1>
+   <table>
+     <caption>Расписание занятий</caption>
+     <tr><th>День</th><th>Предмет</th><th>Время</th></tr>
+     <tr><td>Понедельник</td><td>Алгебра</td><td>15:00</td></tr>
+     <tr><td>Среда</td><td>Матанализ</td><td>13:30</td></tr>
+     <tr><td>Пятница</td><td>Javascript</td><td>17:00</td></tr>
+   </table>
+   <p/>
+   <button onclick="BorderCollapse();" >Border-collapse</button>
+</body>
+</html>

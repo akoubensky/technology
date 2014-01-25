@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Language" content="ru">
+    <meta http-equiv="Content-Type" content="text/html; charset=Cp1251">
+    <title>positioning</title>
+    <style type="text/css">
+      p { font-family: arial; font-size: 18pt; background-color: yellow; }
+    </style>
+  </head>
+  <body>
+    <div>
+      <p>Это самый обычный параграф. 
+      Таких параграфов можно найти огромное количество в Интернете. 
+      Они попадаются просто на каждом шагу.</p>
+    </div>  
+    <div>
+      <p style="position: relative; left: 10%; width: 80%;">
+      Это тоже самый обычный параграф, но в нем указано смещение
+      относительно своего нормального положения внутри охватывающего
+      его блока на 10 процентов { position: relative; left: 10%; width: 80%; }.</p>
+    </div>  
+    <div style="position: fixed; left: 100px; width: 80%;">
+      <p style="position: absolute; left: 5em; top: 200px; width: 50%;">
+      В этом параграфе указана абсолютная позиция внутри охватывающего 
+      его блока { position: absolute; left: 5em; top: 200px; width: 50%; }.</p>
+    </div>  
+    <div style="position: fixed; left: 100px; width: 80%;">
+      <p style="position: fixed; left: 100px; top: 200px; width: 50%;">
+      Наконец, для этого параграфа указано его фиксированное положение 
+      на странице. Здесь уже никакие охватывающие блоки не играют
+      никакой роли { position: fixed; left: 100px; top: 300px; width: 50%; }</p>
+    </div>  
+  </body>
+</html>

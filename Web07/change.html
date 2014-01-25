@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Language" content="ru"/>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+  <title>Замена текста</title>
+  <style>
+    p, li { font-family: "Courier New", Arial, Sans-serif; font-size: large; }
+  </style>
+</head>
+
+<body>
+   <h1>Это заголовок</h1>
+   <p id="para" onclick="onParaClick();">
+      А это - параграф со 
+      <a href="http://www.google.com/">ссылкой</a> внутри.
+   </p>
+   <ul>
+     <li>элемент списка</li>
+     <li>еще один элемент</li>
+     <li>третий элемент списка</li>
+   </ul>
+   
+   <script><!--
+     var pNode = document.getElementById('para');
+     var text = pNode.firstChild.nextSibling.lastChild;
+     var texts = ['ссылкой', 'звездой'];
+     var index = 0;
+
+     function onParaClick() {
+       text.nodeValue = texts[index=1-index];
+     }
+     -->
+   </script>
+</body>
+</html>

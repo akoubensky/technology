@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Language" content="ru"/>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+  <title>Еще кнопка</title>
+  <style>
+    p, button { font-family: Arial, Sans-serif; font-size: large; }
+  </style>
+</head>
+
+<body>
+   <h1>Это заголовок страницы</h1>
+   <p>Демонстрируем изменение заголовка кнопки: 
+     <button onclick="
+       this.firstChild.nodeValue += ' быстрее!';
+       this.parentNode.appendChild(document.createTextNode(' Молодец!'));">
+       Жми сюда!
+     </button>
+   </p>
+</body>
+</html>

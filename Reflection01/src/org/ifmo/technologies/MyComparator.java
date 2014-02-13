@@ -2,6 +2,10 @@ package org.ifmo.technologies;
 
 import java.lang.reflect.Constructor;
 
+/**
+ * Иллюстрация к созданию объектов в случае параметризованных классов
+ * @param <T>
+ */
 public class MyComparator<T extends Comparable<T>> {
 	T object1;
 	T object2;

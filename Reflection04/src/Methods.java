@@ -1,6 +1,10 @@
+import static org.junit.Assert.*;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+
+import org.junit.Test;
 
 /**
  * Демонстрация динамического запуска методов.
@@ -40,50 +44,63 @@ public class Methods {
 	}
 
 	/**
-	 * Тестовая функция.
-	 * @param args Имя вызываемого метода и значение аргумента.
+	 * Вызов метода с заданным именем из заданного класса с заданным аргументом.
+	 * @param methodName
+	 * @param arg
+	 * @throws SecurityException 
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 * @throws IllegalArgumentException 
+	 * @throws IllegalAccessException 
 	 */
-	public static void main(String[] args) {
-		// Проверка: необходимое число аргументов передано?
-		if (args.length != 2) {
-			System.out.println("Usage: java Methods.class <method> <arg>");
-			return;
+	private static void launchMethod(Class<Methods> clazz, String methodName, int arg) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		// Находим метод и запускаем его.
+		Method method = clazz.getDeclaredMethod(methodName, int.class);
+		if ((method.getModifiers() & Modifier.STATIC) != 0) {
+			method.invoke(null, arg);
+		} else {
+			method.invoke(new Methods(), arg);
 		}
-
-		// Чтение аргументов программы.
-		String methodName = args[0];  // Имя вызываемого метода.
-		int arg;                      // Значение передаваемого аргумента.
+	}
+	
+	//========================================================
+	// Тесты
+	//========================================================
+	
+	@Test
+	public void test01() {
 		try {
-			arg = Integer.parseInt(args[1]);
-		} catch (NumberFormatException e) {
-			System.out.println("Second argument should be an integer");
-			return;
+			launchMethod(Methods.class, "m1", 15);
+		} catch (Exception e) {
+			assertTrue(e.getMessage(), false);
 		}
-
-		Class<?> clazz = Methods.class;
+	}
+	
+	@Test
+	public void test02() {
 		try {
-			// Находим метод и запускаем его.
-			Method method = clazz.getDeclaredMethod(methodName, int.class);
-			if ((method.getModifiers() & Modifier.STATIC) != 0) {
-				method.invoke(null, arg);
-			} else {
-				method.invoke(new Methods(), arg);
-			}
-		} catch (SecurityException e) {
-			System.out.println("Метод " + methodName + " недоступен!");
-			return;
-		} catch (NoSuchMethodException e) {
-			System.out.println("Метод " + methodName + " не найден!");
-			return;
-		} catch (IllegalArgumentException e) {
-			System.out.println("Метод " + methodName + " неверно задан аргумент!");
-			return;
-		} catch (IllegalAccessException e) {
-			System.out.println("Метод " + methodName + " недоступен!");
-			return;
-		} catch (InvocationTargetException e) {
-			System.out.println("Метод " + methodName + " применяется к неправильному объекту!");
-			return;
+			launchMethod(Methods.class, "m2", 25);
+		} catch (Exception e) {
+			assertTrue(e.getMessage(), false);
+		}
+	}
+	
+	@Test
+	public void test03() {
+		try {
+			launchMethod(Methods.class, "m3", 35);
+		} catch (Exception e) {
+			assertTrue(e.getMessage(), false);
+		}
+	}
+	
+	@Test
+	public void test04() {
+		try {
+			launchMethod(Methods.class, "m4", 45);
+		} catch (Exception e) {
+			System.out.println(e.getClass().getSimpleName() + ": " + e.getMessage());
+			assertTrue(null, false);
 		}
 	}
 }

@@ -7,44 +7,44 @@ import java.lang.reflect.Modifier;
 import org.junit.Test;
 
 /**
- * Демонстрация динамического запуска методов.
+ * Р”РµРјРѕРЅСЃС‚СЂР°С†РёСЏ РґРёРЅР°РјРёС‡РµСЃРєРѕРіРѕ Р·Р°РїСѓСЃРєР° РјРµС‚РѕРґРѕРІ.
  */
 public class Methods {
 	/**
-	 * Локальное поле, хранящееся в экземплярах класса.
+	 * Р›РѕРєР°Р»СЊРЅРѕРµ РїРѕР»Рµ, С…СЂР°РЅСЏС‰РµРµСЃСЏ РІ СЌРєР·РµРјРїР»СЏСЂР°С… РєР»Р°СЃСЃР°.
 	 */
 	int local = 12;
 
 	/**
-	 * Это статический метод класса, который печатает свой аргумент.
+	 * Р­С‚Рѕ СЃС‚Р°С‚РёС‡РµСЃРєРёР№ РјРµС‚РѕРґ РєР»Р°СЃСЃР°, РєРѕС‚РѕСЂС‹Р№ РїРµС‡Р°С‚Р°РµС‚ СЃРІРѕР№ Р°СЂРіСѓРјРµРЅС‚.
 	 * @param x
 	 */
 	@SuppressWarnings("unused")
 	private static void m1(int x) {
-		System.out.println("static m1. Аргумент x = " + x);
+		System.out.println("static m1. РђСЂРіСѓРјРµРЅС‚ x = " + x);
 	}
 
 	/**
-	 * Нестатический метод класса печатает локальное значение поля
-	 * и свой аргумент.
+	 * РќРµСЃС‚Р°С‚РёС‡РµСЃРєРёР№ РјРµС‚РѕРґ РєР»Р°СЃСЃР° РїРµС‡Р°С‚Р°РµС‚ Р»РѕРєР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РїРѕР»СЏ
+	 * Рё СЃРІРѕР№ Р°СЂРіСѓРјРµРЅС‚.
 	 * @param y
 	 */
 	@SuppressWarnings("unused")
 	private void m2(int y) {
-		System.out.format("m2. Локальное значение local = %d, аргумент y = %d\n", local,  y);
+		System.out.format("m2. Р›РѕРєР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ local = %d, Р°СЂРіСѓРјРµРЅС‚ y = %d\n", local,  y);
 	}
 	/**
-	 * Нестатический метод класса печатает локальное значение поля
-	 * и свой аргумент.
+	 * РќРµСЃС‚Р°С‚РёС‡РµСЃРєРёР№ РјРµС‚РѕРґ РєР»Р°СЃСЃР° РїРµС‡Р°С‚Р°РµС‚ Р»РѕРєР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РїРѕР»СЏ
+	 * Рё СЃРІРѕР№ Р°СЂРіСѓРјРµРЅС‚.
 	 * @param z
 	 */
 	@SuppressWarnings("unused")
 	private void m3(int z) {
-		System.out.format("m3. Локальное значение local = %d, аргумент z = %d\n", local,  z);
+		System.out.format("m3. Р›РѕРєР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ local = %d, Р°СЂРіСѓРјРµРЅС‚ z = %d\n", local,  z);
 	}
 
 	/**
-	 * Вызов метода с заданным именем из заданного класса с заданным аргументом.
+	 * Р’С‹Р·РѕРІ РјРµС‚РѕРґР° СЃ Р·Р°РґР°РЅРЅС‹Рј РёРјРµРЅРµРј РёР· Р·Р°РґР°РЅРЅРѕРіРѕ РєР»Р°СЃСЃР° СЃ Р·Р°РґР°РЅРЅС‹Рј Р°СЂРіСѓРјРµРЅС‚РѕРј.
 	 * @param methodName
 	 * @param arg
 	 * @throws SecurityException 
@@ -54,7 +54,7 @@ public class Methods {
 	 * @throws IllegalAccessException 
 	 */
 	private static void launchMethod(Class<Methods> clazz, String methodName, int arg) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		// Находим метод и запускаем его.
+		// РќР°С…РѕРґРёРј РјРµС‚РѕРґ Рё Р·Р°РїСѓСЃРєР°РµРј РµРіРѕ.
 		Method method = clazz.getDeclaredMethod(methodName, int.class);
 		if ((method.getModifiers() & Modifier.STATIC) != 0) {
 			method.invoke(null, arg);
@@ -64,7 +64,7 @@ public class Methods {
 	}
 	
 	//========================================================
-	// Тесты
+	// РўРµСЃС‚С‹
 	//========================================================
 	
 	@Test

@@ -1,14 +1,15 @@
+import java.util.Arrays;
 import java.util.Random;
 
 
 public final class SortMethods {
-	// Генератор случайных чисел
+	// Р“РµРЅРµСЂР°С‚РѕСЂ СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР»
 	static Random random = new Random();
 
 	/**
-	 * Сортировка методом простых вставок.
-	 * @param <T> Тип элементов сортируемого массива
-	 * @param data Массив, подлежащий сортировке
+	 * РЎРѕСЂС‚РёСЂРѕРІРєР° РјРµС‚РѕРґРѕРј РїСЂРѕСЃС‚С‹С… РІСЃС‚Р°РІРѕРє.
+	 * @param <T> РўРёРї СЌР»РµРјРµРЅС‚РѕРІ СЃРѕСЂС‚РёСЂСѓРµРјРѕРіРѕ РјР°СЃСЃРёРІР°
+	 * @param data РњР°СЃСЃРёРІ, РїРѕРґР»РµР¶Р°С‰РёР№ СЃРѕСЂС‚РёСЂРѕРІРєРµ
 	 */
 	public static <T extends Comparable<T>> void InsertSort(T[] data) {
 		int i, j;
@@ -30,9 +31,9 @@ public final class SortMethods {
 			return;
 		else {
 			int index = from + random.nextInt(to - from);
-			T c = data[index];    // Выбираем некоторый элемент
+			T c = data[index];    // Р’С‹Р±РёСЂР°РµРј РЅРµРєРѕС‚РѕСЂС‹Р№ СЌР»РµРјРµРЅС‚
 			data[index] = data[from];
-			// Распределяем элементы массива на значения меньшие и большие c.
+			// Р Р°СЃРїСЂРµРґРµР»СЏРµРј СЌР»РµРјРµРЅС‚С‹ РјР°СЃСЃРёРІР° РЅР° Р·РЅР°С‡РµРЅРёСЏ РјРµРЅСЊС€РёРµ Рё Р±РѕР»СЊС€РёРµ c.
 			int low = from, high = to;
 			// Inv: (low <= high) && data[from:(low-1)] <= c && data[high:to] >= c
 			while (low < high) {
@@ -41,28 +42,25 @@ public final class SortMethods {
 				while (low < high && data[++low].compareTo(c) <= 0) ;
 				data[high] = data[low];
 			}
-			// Вставляем элемент на свое место
+			// Р’СЃС‚Р°РІР»СЏРµРј СЌР»РµРјРµРЅС‚ РЅР° СЃРІРѕРµ РјРµСЃС‚Рѕ
 			data[low] = c;
-			// Независимо сортируем верхнюю и нижнюю половины массива
+			// РќРµР·Р°РІРёСЃРёРјРѕ СЃРѕСЂС‚РёСЂСѓРµРј РІРµСЂС…РЅСЋСЋ Рё РЅРёР¶РЅСЋСЋ РїРѕР»РѕРІРёРЅС‹ РјР°СЃСЃРёРІР°
 			QuickSort(data, from, low);
 			QuickSort(data, low+1, to);
 		}
 	}
 
 	private static void print(Object[] data) {
-		for (Object o : data) {
-			System.out.print(o + " ");
-		}
-		System.out.println();
+		System.out.println(Arrays.toString(data));
 	}
 
 	public static void main(String[] args) {
-		String[] data1 = { "у", "попа", "была", "собака", "он", "ее","любил" };
+		String[] data1 = { "Сѓ", "РїРѕРїР°", "Р±С‹Р»Р°", "СЃРѕР±Р°РєР°", "РѕРЅ", "РµРµ","Р»СЋР±РёР»" };
 		print(data1);
 		InsertSort(data1);
 		print(data1);
 
-		String[] data2 = { "белеет", "парус", "одинокий", "в", "тумане", "моря","голубом" };
+		String[] data2 = { "Р±РµР»РµРµС‚", "РїР°СЂСѓСЃ", "РѕРґРёРЅРѕРєРёР№", "РІ", "С‚СѓРјР°РЅРµ", "РјРѕСЂСЏ","РіРѕР»СѓР±РѕРј" };
 		print(data2);
 		QuickSort(data2);
 		print(data2);

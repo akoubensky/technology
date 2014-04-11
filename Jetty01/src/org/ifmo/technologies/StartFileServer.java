@@ -2,6 +2,9 @@ package org.ifmo.technologies;
 
 import org.eclipse.jetty.server.Server;
 
+/**
+ * Программа, запускающая сервер с обработчиком запросов типа FileHandler
+ */
 public class StartFileServer {
 
 	public static void main(String[] args) {
@@ -9,9 +12,7 @@ public class StartFileServer {
         server.setHandler(new FileHandler());
         try {
 			server.start();
-			server.join();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

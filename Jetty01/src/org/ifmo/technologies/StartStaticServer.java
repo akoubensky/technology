@@ -6,6 +6,9 @@ import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 
+/**
+ * Программа, запускающая сервер с обработчиком запросов типа ResourceHandler
+ */
 public class StartStaticServer {
 
 	public static void main(String[] args) {
@@ -19,9 +22,7 @@ public class StartStaticServer {
         server.setHandler(handlers);
         try {
 			server.start();
-			server.join();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

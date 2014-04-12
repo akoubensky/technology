@@ -34,6 +34,28 @@ import javax.servlet.http.HttpServletResponse;
 public class StudServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
+	private static final String CONTENT_TYPE = "text/html; charset=utf-8";
+	private static final String EMPTY_LIST = 
+			"<title>Список студентов</title>\n" +
+			"<h2>Список студентов пуст</h2>\n";
+	private static final String STUD_TABLE = 
+			"<title>Список студентов</title>\n" +
+			"<h2>Список студентов</h2>\n" +
+			"<table style=\'width: 50%%; border: 1px solid black; border-collapse: collapse\'>\n" +
+			"  <col style=\'width: 60%%; border: 1px solid black\'/><col/>\n" +
+			"  %s" +
+			"</table>\n";
+	private static final String STUD_ROW =
+			"<tr><td>%s</td><td>%s</td></tr>\n";
+	
+	//============ Errors ===============
+	
+	private static final String ERR_EMPTY_RESOURCE = "Не задано имя студента";
+	private static final String ERR_NAME_PAR_MISSED = "\'name\' параметр не задан";
+	private static final String ERR_GROUP_PAR_MISSED = "\'group\' параметр не задан";
+	private static final String ERR_STUDENT_EXISTS = "Студент %s уже существует; задайте уникальное имя";
+	private static final String ERR_STUDENT_NOT_FOUND = "Студент %s не существует";
+	
 	Map<String, String> students = new TreeMap<>();
 
     @Override
@@ -45,6 +67,7 @@ public class StudServlet extends HttpServlet {
     protected void doGet(
     		HttpServletRequest request,
     		HttpServletResponse response) {
+		response.setContentType(CONTENT_TYPE);
     	String path = request.getPathInfo();
     	try {
     		if (path != null && !"/".equals(path)) {
@@ -52,23 +75,7 @@ public class StudServlet extends HttpServlet {
     			response.sendError(HttpServletResponse.SC_NOT_FOUND);
     		} else {
     			// Формируем список
-    			response.setContentType("text/html; charset=utf-8");
-    			PrintWriter writer = response.getWriter();
-    			writer.println("<title>Список студентов</title>");
-    			if (students.isEmpty()) {
-    				// Пустой список студентов
-    				writer.println("<h2>Список студентов пуст</h2>");
-    			} else {
-    				writer.println("<h2>Список студентов</h2>");
-    				// Формируем таблицу
-    				writer.println("<table style=\'width: 50%; border: 1px solid black; border-collapse: collapse\'>");
-    				writer.println("<col style=\'width: 60%; border: 1px solid black\'/><col/>");
-    				for (Map.Entry<String, String> entry : students.entrySet()) {
-    					writer.format("<tr><td>%s</td><td>%s</td></tr>\n",
-    							entry.getKey(), entry.getValue());
-    				}
-    				writer.println("</table>");
-    			}
+    			response.getWriter().print(students.isEmpty() ? EMPTY_LIST : studList());
     		}
     	} catch (IOException e) {
     	}
@@ -86,18 +93,20 @@ public class StudServlet extends HttpServlet {
     	String path = request.getPathInfo();
     	String name = request.getParameter("name");		// Имя студента
     	String group = request.getParameter("group");	// Номер группы
+		response.setContentType(CONTENT_TYPE);
     	try {
     		if (path != null && !"/".equals(path)) {
     			// Должен быть указан пустой ресурс
     			response.sendError(HttpServletResponse.SC_NOT_FOUND);
-    		} else if (name == null || group == null) {
-    			// По крайней мере один из обязательных параметров не найден
-    			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-    					"\'name\' or \'group\' parameter(s) missed");
+    		} else if (name == null) {
+    			// Параметр 'name' не найден
+    			response.sendError(HttpServletResponse.SC_BAD_REQUEST, ERR_NAME_PAR_MISSED);
+    		} else if (group == null) {
+    			// Параметр 'group' не найден
+    			response.sendError(HttpServletResponse.SC_BAD_REQUEST, ERR_GROUP_PAR_MISSED);
     		} else if (students.get(name) != null) {
     			// Такой студент уже существует - не добавляем
-    			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-    					"student \'" + name + "\' already exists");
+    			response.sendError(HttpServletResponse.SC_BAD_REQUEST, String.format(ERR_STUDENT_EXISTS, name));
     		} else {
     			// Ошибок в запросе нет, добавляем студента
     			students.put(name, group);
@@ -117,21 +126,21 @@ public class StudServlet extends HttpServlet {
     		HttpServletResponse response) {
     	String path = request.getPathInfo();
     	String group = request.getParameter("group");	// Номер группы
+		response.setContentType(CONTENT_TYPE);
     	try {
     		if (path == null) {
     			// Имя студента (ресурс) не задано
     			response.sendError(HttpServletResponse.SC_NOT_FOUND,
-    					"Empty resource");
+    					ERR_EMPTY_RESOURCE);
     		} else if (group == null) {
     			// Номер группы не задан
-    			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-    					"\'group\' parameter missed");
+    			response.sendError(HttpServletResponse.SC_BAD_REQUEST, ERR_GROUP_PAR_MISSED);
     		} else {
     			String name = path.substring(1);	// Имя студента
     			if (students.get(name) == null) {
     				// Студент с заданным именем не найден
     				response.sendError(HttpServletResponse.SC_NOT_FOUND,
-    						"Student " + name + " not found");
+    						String.format(ERR_STUDENT_NOT_FOUND, name));
     			} else {
     				// Все нормально, записываем информацию о группе
     				students.put(name, group);
@@ -151,17 +160,18 @@ public class StudServlet extends HttpServlet {
     		HttpServletRequest request,
     		HttpServletResponse response) {
     	String path = request.getPathInfo();
+		response.setContentType(CONTENT_TYPE);
     	try {
     		if (path == null) {
     			// Имя студента (ресурс) не задано
     			response.sendError(HttpServletResponse.SC_NOT_FOUND,
-    					"Empty resource");
+    					ERR_EMPTY_RESOURCE);
     		} else {
     			String name = path.substring(1);
     			if (students.get(name) == null) {
     				// Студент с заданным именем не найден
     				response.sendError(HttpServletResponse.SC_NOT_FOUND,
-    						"Student " + name + " not found");
+    						String.format(ERR_STUDENT_NOT_FOUND, name));
     			} else {
     				// Все нормально, удаляем студента
     				students.remove(name);
@@ -169,5 +179,13 @@ public class StudServlet extends HttpServlet {
     		}
     	} catch (IOException e) {
     	}
+    }
+    
+    private String studList() {
+    	StringBuilder rows = new StringBuilder();
+    	for (Map.Entry<String, String> entry : students.entrySet()) {
+    		rows.append(String.format(STUD_ROW, entry.getKey(), entry.getValue()));
+    	}
+    	return String.format(STUD_TABLE, rows.toString());
     }
 }

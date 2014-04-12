@@ -20,7 +20,6 @@
 package org.ifmo.technologies;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -50,11 +49,32 @@ public class StudServlet extends HttpServlet {
 	
 	//============ Errors ===============
 	
+	private static final String ERROR = "<h2>ERROR %s</h2>\n<p>%s</p>\n";
 	private static final String ERR_EMPTY_RESOURCE = "Не задано имя студента";
+	private static final String ERR_NOT_EMPTY_RESOURCE = "Ресурс %s не найден";
 	private static final String ERR_NAME_PAR_MISSED = "\'name\' параметр не задан";
 	private static final String ERR_GROUP_PAR_MISSED = "\'group\' параметр не задан";
 	private static final String ERR_STUDENT_EXISTS = "Студент %s уже существует; задайте уникальное имя";
 	private static final String ERR_STUDENT_NOT_FOUND = "Студент %s не существует";
+	
+	public enum Error {
+		OK(HttpServletResponse.SC_OK, "OK"),
+		BAD_REQUEST(HttpServletResponse.SC_BAD_REQUEST, "Bad request"),
+		NOT_FOUND(HttpServletResponse.SC_NOT_FOUND, "Not found");
+		
+		private int code;
+		private String message;
+		
+		private Error(int code, String s) {
+			this.code = code;
+			message = s;
+		}
+		
+		@Override
+		public String toString() { return String.format("%d: %s", code, message); }
+		
+		public int getCode() { return code; }
+	}
 	
 	Map<String, String> students = new TreeMap<>();
 
@@ -72,7 +92,7 @@ public class StudServlet extends HttpServlet {
     	try {
     		if (path != null && !"/".equals(path)) {
     			// Должен быть указан пустой ресурс
-    			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+    			error(response, Error.NOT_FOUND, String.format(ERR_NOT_EMPTY_RESOURCE, path));
     		} else {
     			// Формируем список
     			response.getWriter().print(students.isEmpty() ? EMPTY_LIST : studList());
@@ -97,16 +117,16 @@ public class StudServlet extends HttpServlet {
     	try {
     		if (path != null && !"/".equals(path)) {
     			// Должен быть указан пустой ресурс
-    			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+    			error(response, Error.NOT_FOUND, String.format(ERR_NOT_EMPTY_RESOURCE, path));
     		} else if (name == null) {
     			// Параметр 'name' не найден
-    			response.sendError(HttpServletResponse.SC_BAD_REQUEST, ERR_NAME_PAR_MISSED);
+    			error(response, Error.BAD_REQUEST, ERR_NAME_PAR_MISSED);
     		} else if (group == null) {
     			// Параметр 'group' не найден
-    			response.sendError(HttpServletResponse.SC_BAD_REQUEST, ERR_GROUP_PAR_MISSED);
+    			error(response, Error.BAD_REQUEST, ERR_GROUP_PAR_MISSED);
     		} else if (students.get(name) != null) {
     			// Такой студент уже существует - не добавляем
-    			response.sendError(HttpServletResponse.SC_BAD_REQUEST, String.format(ERR_STUDENT_EXISTS, name));
+    			error(response, Error.BAD_REQUEST, String.format(ERR_STUDENT_EXISTS, name));
     		} else {
     			// Ошибок в запросе нет, добавляем студента
     			students.put(name, group);
@@ -130,17 +150,15 @@ public class StudServlet extends HttpServlet {
     	try {
     		if (path == null) {
     			// Имя студента (ресурс) не задано
-    			response.sendError(HttpServletResponse.SC_NOT_FOUND,
-    					ERR_EMPTY_RESOURCE);
+    			error(response, Error.NOT_FOUND, ERR_EMPTY_RESOURCE);
     		} else if (group == null) {
     			// Номер группы не задан
-    			response.sendError(HttpServletResponse.SC_BAD_REQUEST, ERR_GROUP_PAR_MISSED);
+    			error(response, Error.BAD_REQUEST, ERR_GROUP_PAR_MISSED);
     		} else {
     			String name = path.substring(1);	// Имя студента
     			if (students.get(name) == null) {
     				// Студент с заданным именем не найден
-    				response.sendError(HttpServletResponse.SC_NOT_FOUND,
-    						String.format(ERR_STUDENT_NOT_FOUND, name));
+        			error(response, Error.NOT_FOUND, String.format(ERR_STUDENT_NOT_FOUND, name));
     			} else {
     				// Все нормально, записываем информацию о группе
     				students.put(name, group);
@@ -164,14 +182,12 @@ public class StudServlet extends HttpServlet {
     	try {
     		if (path == null) {
     			// Имя студента (ресурс) не задано
-    			response.sendError(HttpServletResponse.SC_NOT_FOUND,
-    					ERR_EMPTY_RESOURCE);
+    			error(response, Error.NOT_FOUND, ERR_EMPTY_RESOURCE);
     		} else {
     			String name = path.substring(1);
     			if (students.get(name) == null) {
     				// Студент с заданным именем не найден
-    				response.sendError(HttpServletResponse.SC_NOT_FOUND,
-    						String.format(ERR_STUDENT_NOT_FOUND, name));
+        			error(response, Error.NOT_FOUND, String.format(ERR_STUDENT_NOT_FOUND, name));
     			} else {
     				// Все нормально, удаляем студента
     				students.remove(name);
@@ -187,5 +203,10 @@ public class StudServlet extends HttpServlet {
     		rows.append(String.format(STUD_ROW, entry.getKey(), entry.getValue()));
     	}
     	return String.format(STUD_TABLE, rows.toString());
+    }
+    
+    private void error(HttpServletResponse response, Error error, String reason) throws IOException {
+    	response.setStatus(error.getCode());
+    	response.getWriter().format(ERROR, error.toString(), reason);
     }
 }

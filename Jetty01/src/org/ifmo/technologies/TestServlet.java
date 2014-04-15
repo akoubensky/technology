@@ -40,41 +40,14 @@ public class TestServlet extends HttpServlet {
 			reader.close();
 		} catch (IOException e) {
 	        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-	        writeString(response, "<h2>404 - PAGE NOT FOUND</h2>");
 			writeString(response, String.format(
+					"<h2>404 - PAGE NOT FOUND</h2>\n" +
 					"<p>Sorry, the requested page <code>%s</code> is not found</p>\n",
-					request.getPathTranslated()));
+					path));
 		}
     }
     
-    // Запросы PUT, POST и DELETE не обрабатываются
-    
-    @Override
-    protected void doPut(
-    		HttpServletRequest request,
-    		HttpServletResponse response) {
-    	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-    	response.setContentType("text/plain");
-    	writeString(response, "Not implemented");
-    }
-    
-    @Override
-    protected void doPost(
-    		HttpServletRequest request,
-    		HttpServletResponse response) {
-    	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-    	response.setContentType("text/plain");
-    	writeString(response, "Not implemented");
-    }
-    
-    @Override
-    protected void doDelete(
-    		HttpServletRequest request,
-    		HttpServletResponse response) {
-    	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-    	response.setContentType("text/plain");
-    	writeString(response, "Not implemented");
-    }
+    // Запросы PUT, POST, DELETE и другие не обрабатываются
     
     private void writeString(HttpServletResponse response, String message) {
     	try {

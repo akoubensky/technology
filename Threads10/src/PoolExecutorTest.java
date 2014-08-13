@@ -23,9 +23,9 @@ public class PoolExecutorTest {
     for (int i = 0; i < 25; i++) {
     	executor.execute(new MyProcess(i));
     }
+    System.out.println("Все процессы созданы и запущены");
+    
     executor.shutdown();
     executor.awaitTermination(1, TimeUnit.MINUTES);
-    
-    System.out.println("Все процессы созданы и запущены");
   }
 }

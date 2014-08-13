@@ -13,13 +13,9 @@ public class StartStaticServer {
 
 	public static void main(String[] args) {
         Server server = new Server(8080);
-        ResourceHandler resource_handler = new ResourceHandler();
-        resource_handler.setDirectoriesListed(false);
-        resource_handler.setWelcomeFiles(new String[] { "index.html" });
-        resource_handler.setResourceBase(".");
-        HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[] { resource_handler, new DefaultHandler() });
-        server.setHandler(handlers);
+        ResourceHandler resourceHandler = new ResourceHandler();
+        resourceHandler.setResourceBase(".");
+        server.setHandler(resourceHandler);
         try {
 			server.start();
 		} catch (Exception e) {

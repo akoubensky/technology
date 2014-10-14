@@ -1,15 +1,17 @@
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Быстрая сортировка с помощью ForkJoin работю
+ * Быстрая сортировка с помощью ForkJoin работ.
  * 
  * @param <T> тип элементов сортируемого массива
  */
 public class QuickSort<T extends Comparable<T>> extends RecursiveAction {
 	private static final long serialVersionUID = 1L;
+	private static final int MIN_PARALLEL = 1000; 
 	
 	final private T[] array;		// Сортируемый массив
 	final private int low, high;	// Верхняя и нижняя границы сортируемого участка
@@ -31,7 +33,10 @@ public class QuickSort<T extends Comparable<T>> extends RecursiveAction {
 	protected void compute() {
 		int bottom = low;
 		int top = high;
-		if (top - bottom <= 1) return;
+		if (top - bottom <= MIN_PARALLEL) {
+			Arrays.sort(array, low, high);
+			return;
+		}
 		
 		// Первый элемент, который будем ставить на "свое" место.
 		T element = array[bottom];
@@ -68,19 +73,31 @@ public class QuickSort<T extends Comparable<T>> extends RecursiveAction {
 	public static void main(String[] args) throws InterruptedException {
 		// Создаем массив из случайных элементов
 		final int COUNT = 100000;
+		
 		Random rnd = new Random();
 		Integer[] array = new Integer[COUNT];
 		for (int i = 0; i < COUNT; i++) array[i] = rnd.nextInt(2*COUNT);
 		
-		// Пул Fork/Join работ
-		ForkJoinPool pool = new ForkJoinPool(8);
+		// Запускаем "параллельную" версию сортировки с помощью пула Fork/Join работ
+		ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
 		
+		System.out.println("Параллельная сортировка");
 		long start = System.currentTimeMillis();
 		pool.execute(new QuickSort<Integer>(array, 0, COUNT));
 		pool.shutdown();
 		pool.awaitTermination(1, TimeUnit.MINUTES);
 		long elapsed = System.currentTimeMillis() - start;
 		
-		System.out.println(test(array) + " in " + elapsed + " millis");
+		System.out.format("Сортировка выполнена %s за %d миллисекунд\n",
+				test(array) ? "успешно" : "с ошибками", elapsed);
+		
+		for (int i = 0; i < COUNT; i++) array[i] = rnd.nextInt(2*COUNT);
+		System.out.println("Последовательная сортировка");
+		start = System.currentTimeMillis();
+		Arrays.sort(array);
+		elapsed = System.currentTimeMillis() - start;
+		
+		System.out.format("Сортировка выполнена %s за %d миллисекунд\n",
+				test(array) ? "успешно" : "с ошибками", elapsed);
 	}
 }

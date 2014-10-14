@@ -22,7 +22,7 @@ public class Buffer {
     while (count == MAX_COUNT) {
       try {
         // Разблокируем буфер и ждем наступления очередного события.
-        wait(10);
+        wait();
       } catch (InterruptedException x) {}
     }
     // Записываем очередное число в буфер.
@@ -40,7 +40,7 @@ public class Buffer {
     while (count == 0) {
       try {
         // Разблокируем буфер и ждем наступления очередного события.
-        wait(10);
+        wait();
       } catch (InterruptedException x) {}
     }
     Integer toRemove = buffer[first++];

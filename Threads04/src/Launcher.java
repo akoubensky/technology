@@ -5,9 +5,7 @@ public class Launcher {
 	public static void main(String[] args) {
 		final SyncQueue queue = new SyncQueue();
 
-		Thread t1 = new Thread(
-				new Runnable() {
-					public void run() {
+		Thread t1 = new Thread(() -> {
 						for (int i = 0; i < 50; ++i) {
 							System.out.println(Thread.currentThread().getName() + ": added " + queue.offer());
 							System.out.println(Thread.currentThread().getName() + ": added " + queue.offer());
@@ -20,12 +18,9 @@ public class Launcher {
 								break;
 							}
 						}
-					}
 				}, "Thread 1");
 
-		Thread t2 = new Thread(
-				new Runnable() {
-					public void run() {
+		Thread t2 = new Thread(() -> {
 						for (int i = 0; i < 70; ++i) {
 							System.out.println(Thread.currentThread().getName() + ": added " + queue.offer());
 							System.out.println(Thread.currentThread().getName() + ": extracted " + queue.poll());
@@ -36,7 +31,6 @@ public class Launcher {
 								break;
 							}
 						}
-					}
 				}, "Thread 2");
 
 		queue.offer();

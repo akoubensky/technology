@@ -26,16 +26,12 @@ public class FutureExecutorTest {
   }
   
   private static void printTaskResult(final Future<?> task) {
-    (new Thread(new Runnable() {
-      public void run() {
+    (new Thread(() -> {
         try {
           System.out.println(task.get());
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
           e.printStackTrace();
         }
-      }
     })).start();
   }
 

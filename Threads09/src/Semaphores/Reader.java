@@ -15,12 +15,7 @@ public class Reader extends Thread {
 	 * @return Прочитанное число.
 	 */
 	public Integer read() {
-		try {
-			return buffer.removeObject();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return buffer.removeObject();
 	}
 
 	/**
@@ -31,12 +26,12 @@ public class Reader extends Thread {
 	public void run() {
 		for (int i = 0; i < 1000; i++) {
 			Integer result = read();
-			// Имитируем обработку прочитанного числа.
-			for (int k = 0, sum = 0; k < 10000; ++k) { sum += k; }
 			// Очередное прочитанное число должно быть тем, которое мы записали.
 			if (result.intValue() != i) {
 				System.out.println("Expected " + i + " but " + result + " received.");
 			}
+			// Имитируем обработку прочитанного числа.
+			for (int k = 0, sum = 0; k < 10000; ++k) { sum += k; }
 		}
 		// Конец работы.
 		System.out.println("Reader done");

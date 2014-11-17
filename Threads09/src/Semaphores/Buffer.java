@@ -27,17 +27,17 @@ public class Buffer {
 	 * @param n Записываемое число.
 	 * @throws InterruptedException 
 	 */
-	public void addObject(Integer n) throws InterruptedException {
+	public void addObject(Integer n) {
 		// Запрашиваем ресурс - свободную ячейку.
 		// Если нет такой - ждем, пока не освободится.
-		free.acquire();
+		free.acquireUninterruptibly();
 		// Блокируем разделяемый ресурс - буфер
 		synchronized(this) {
 			// Кладем в буфер заданное значение
 			buffer[(first + count++) % MAX_COUNT] = n;
+			// Освобождаем ресурс занятых ячеек
+			busy.release();
 		}
-		// Освобождаем ресурс занятых ячеек
-		busy.release();
 	}
 
 	/**
@@ -45,21 +45,21 @@ public class Buffer {
 	 * @return Прочитанное число.
 	 * @throws InterruptedException 
 	 */
-	public Integer removeObject() throws InterruptedException {
+	public Integer removeObject() {
 		Integer element;
 		// Запрашиваем ресурс - занятую ячейку.
 		// Если нет такой - ждем, пока не освободится.
-		busy.acquire();
+		busy.acquireUninterruptibly();
 		// Блокируем разделяемый ресурс - буфер
 		synchronized(this) {
 			// Выбираем значение из буфера
 			element = buffer[first];
 			first = (first+1) % MAX_COUNT;
 			count--;
+			// Освобождаем ресурс свободных ячеек
+			free.release();
+			return element;
 		}
-		// Освобождаем ресурс свободных ячеек
-		free.release();
-		return element;
 	}
 
 	/**

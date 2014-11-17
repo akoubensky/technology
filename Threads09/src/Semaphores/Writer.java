@@ -15,11 +15,7 @@ public class Writer extends Thread {
 	 * @param n Записываемое число.
 	 */
 	public void write(Integer n) {
-		try {
-			buffer.addObject(n);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		buffer.addObject(n);
 	}
 
 	/**
@@ -31,7 +27,6 @@ public class Writer extends Thread {
 		for (int i = 0; i < 1000; i++) {
 			// Имитируем подготовку очередного значения.
 			for (int k = 0, sum = 0; k < 10000; ++k) { sum += k; }
-			//try { Thread.sleep(2); } catch (InterruptedException x) {}
 			// Записываем число в буфер.
 			write(i);
 		}

@@ -1,24 +1,42 @@
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
+/**
+ * Запускаем процессы с помощью исполнителя задач с несколькими потоками.
+ * Этот исполнитель поддерживает только параллельное исполнение нескольких задач,
+ * поэтому процессы запускаются одновременно, но не более трех. 
+ */
 public class PoolExecutorTest {
-  final static Runnable process = new Runnable() {
-    public void run() {
-      for (int i = 0; i < 4; i++) {
-        System.out.println(Thread.currentThread().getName() + ": " + i);
-      }
-    }
-  };
+	private static final int POOLS_NUM = Runtime.getRuntime().availableProcessors();
+	
+	private static class MyProcess implements Runnable {
+		final int number;
+		
+		public MyProcess(int n) { number = n; }
+		
+	    public void run() {
+	      for (int i = 0; i < 3; i++) {
+	        System.out.format("Thread: %s; Process: %d; Iteration: %d%n",
+	        		Thread.currentThread().getName(), number, i);
+	      }
+	    }
+	}
   
   public static void main(String[] args) throws InterruptedException {
-    ExecutorService executor = Executors.newFixedThreadPool(3);
+    ExecutorService executor = Executors.newFixedThreadPool(POOLS_NUM);
     
-    executor.execute(process);
-    executor.execute(process);
-    executor.execute(process);
-    executor.shutdown();
-    
+    System.out.format("Всего имееется %d процессоров\n", POOLS_NUM);
+    long startTime = System.currentTimeMillis();
+    for (int i = 0; i < 25; i++) {
+    	executor.execute(new MyProcess(i));
+    }
     System.out.println("Все процессы созданы и запущены");
+    
+    executor.shutdown();
+    executor.awaitTermination(1, TimeUnit.MINUTES);
+	System.out.format("Выполнение всех задач закончено за %d миллисекунд\n",
+			(int)(System.currentTimeMillis() - startTime));
   }
 }

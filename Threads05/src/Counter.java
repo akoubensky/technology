@@ -14,23 +14,21 @@ public class Counter {
 	public static void main(String[] args) {
 		final Counter c1 = new Counter();
 		final Counter c2 = new Counter();
-		Thread t1 = new Thread(
-				new Runnable() {
-					public void run() {
+		Thread t1 = new Thread(() -> {
 						for (int i = 0; i < 1000; ++i) {
 							c1.change(c2);
 						}
-						System.out.println(Thread.currentThread().getName() + " done");
-					}
+						System.out.format(
+								"Thread %s done, counters = (%d, %d)\n",
+								Thread.currentThread().getName(), c1.counter, c2.counter);
 				});
-		Thread t2 = new Thread(
-				new Runnable() {
-					public void run() {
+		Thread t2 = new Thread(() -> {
 						for (int i = 0; i < 1000; ++i) {
 							c2.change(c1);
 						}
-						System.out.println(Thread.currentThread().getName() + " done");
-					}
+						System.out.format(
+								"Thread %s done, counters = (%d, %d)\n",
+								Thread.currentThread().getName(), c1.counter, c2.counter);
 				});
 		t1.start();
 		t2.start();

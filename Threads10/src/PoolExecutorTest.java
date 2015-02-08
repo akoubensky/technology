@@ -18,8 +18,10 @@ public class PoolExecutorTest {
 		
 	    public void run() {
 	      for (int i = 0; i < 3; i++) {
-	        System.out.format("Thread: %s; Process: %d; Iteration: %d%n",
-	        		Thread.currentThread().getName(), number, i);
+	    	  int p = 0;
+	    	  for (int k = 0; k < 10000000; k++) p+=k;
+//	        System.out.format("Thread: %s; Process: %d; Iteration: %d%n",
+//	        		Thread.currentThread().getName(), number, i);
 	      }
 	    }
 	}

@@ -72,14 +72,14 @@ public class QuickSort<T extends Comparable<T>> extends RecursiveAction {
 
 	public static void main(String[] args) throws InterruptedException {
 		// Создаем массив из случайных элементов
-		final int COUNT = 100000;
+		final int COUNT = 1000000;
 		
 		Random rnd = new Random();
 		Integer[] array = new Integer[COUNT];
 		for (int i = 0; i < COUNT; i++) array[i] = rnd.nextInt(2*COUNT);
 		
 		// Запускаем "параллельную" версию сортировки с помощью пула Fork/Join работ
-		ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
+		ForkJoinPool pool = new ForkJoinPool();
 		
 		System.out.println("Параллельная сортировка");
 		long start = System.currentTimeMillis();

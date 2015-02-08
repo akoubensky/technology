@@ -77,9 +77,9 @@ public class MergeSort<T extends Comparable<T>> extends RecursiveAction {
 		
 		System.out.println("Параллельная сортировка");
 		long start = System.currentTimeMillis();
-		pool.execute(new MergeSort<Integer>(array, 0, COUNT));
+		pool.invoke(new MergeSort<Integer>(array, 0, COUNT));
 		pool.shutdown();
-		pool.awaitTermination(1, TimeUnit.MINUTES);
+		//pool.awaitTermination(1, TimeUnit.MINUTES);
 		long elapsed = System.currentTimeMillis() - start;
 		
 		System.out.format("Сортировка выполнена %s за %d миллисекунд\n",

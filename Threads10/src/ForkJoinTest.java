@@ -14,14 +14,16 @@ public class ForkJoinTest {
 		@Override
 		protected void compute() {
 			for (int i = 0; i < 3; i++) {
-				System.out.format("Thread: %s; Process: %d; Iteration: %d%n",
-						Thread.currentThread().getName(), number, i);
+				int p = 0;
+				for (int k = 0; k < 10000000; k++) p+=k;
+//				System.out.format("Thread: %s; Process: %d; Iteration: %d%n",
+//						Thread.currentThread().getName(), number, i);
 			}
 		}
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		ForkJoinPool executor = new ForkJoinPool(POOLS_NUM);
+		ForkJoinPool executor = new ForkJoinPool();
 
 	    System.out.format("Всего имееется %d процессоров\n", POOLS_NUM);
 	    long startTime = System.currentTimeMillis();

@@ -1,3 +1,5 @@
+package org.ifmo.function;
+
 /**
  * Решение задачи о расстановке ферзей на квадратной шахматной доске произвольного размера.
  */
@@ -50,10 +52,13 @@ public class Queens {
 		}
 
         // Пытаемся построить правильную позицию из начальной пустой.
+		long start = System.currentTimeMillis();
 		Position finalPos = correct(Position.EMPTY);
 		if (finalPos != null) {
+			long delta = System.currentTimeMillis() - start;
             // Расстановка найдена
 			finalPos.printPos.accept(QUEENS);
+			System.out.println(delta + " millis");
 		} else {
             // Расстановка не найдена
 			System.out.println("No position!");

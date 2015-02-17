@@ -1,3 +1,4 @@
+package org.ifmo.function;
 import java.util.function.BiPredicate;
 import java.util.function.IntConsumer;
 

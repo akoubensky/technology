@@ -26,11 +26,18 @@ public class SplitPrimes {
 	 * @return	Отфильтрованный поток без первого элемента.
 	 */
 	private Stream<Integer> sieve(Stream<Integer> s, Stream.Builder<Integer> builder) {
+		// Извлекаем из потока первывй элемент
 		Spliterator<Integer> spliterator = s.spliterator();
 		spliterator.tryAdvance(buffer::set);
 		Integer next = buffer.get();
+		// Добавляем этот элемент в строящийся поток простых чисел
 		builder.add(next);
+		// Строим новый поток из оставшихся элементов, отфильтровывая кратные next.
 		return StreamSupport.stream(spliterator, false).filter(x -> x % next != 0);
+		
+		// Внимание! Использовать старый поток уже не удастся!
+		// Продвижение итератора его "испортило"!
+		//return s.skip(1).filter(x -> x % next != 0);
 	}
 	
 	/**
@@ -59,6 +66,6 @@ public class SplitPrimes {
 	public static void main(String[] args) {
 		SplitPrimes s = new SplitPrimes();
 		System.out.println(Arrays.toString(s.getPrimes(20)));
-		System.out.println(s.getPrimes(10000)[9999]);
+		//System.out.println(s.getPrimes(10000)[9999]);
 	}
 }

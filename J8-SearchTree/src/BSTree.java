@@ -281,6 +281,7 @@ public class BSTree<T extends Comparable<T>> implements Iterable<T> {
             System.out.print(e + " ");
         }
         System.out.println();
+        System.out.println("------------------------------");
     }
 
     /**
@@ -289,24 +290,28 @@ public class BSTree<T extends Comparable<T>> implements Iterable<T> {
      */
     private static class Printer<T> implements Consumer<T> {
         final int limit;
-        int counter = 0;
+        int lineCounter = 0;
+        int totalCounter = 0;
 
         Printer(int limit) {
             this.limit = limit;
         }
 
         Printer() {
-            this(50);
+            this(30);
         }
+        
+        public int getCounter() { return totalCounter; }
 
         @Override
         public void accept(T n) {
-            if (counter == limit) {
+            if (lineCounter == limit) {
                 System.out.println();
-                counter = 0;
+                lineCounter = 0;
             }
             System.out.print(n + " ");
-            counter++;
+            lineCounter++;
+            totalCounter++;
         }
     }
 
@@ -319,8 +324,10 @@ public class BSTree<T extends Comparable<T>> implements Iterable<T> {
         BSTree<Integer> tree = buildTree(1, 300);
         Stream<Integer> stream = tree.stream();
         if (parallel) stream = stream.parallel();
-        stream.forEach(new Printer<>());
+        Printer<Integer> printer = new Printer<>();
+        stream.forEach(printer);
         System.out.println();
+        System.out.println("--------- " + printer.getCounter() + " ------------");
     }
 
     /**
@@ -329,9 +336,7 @@ public class BSTree<T extends Comparable<T>> implements Iterable<T> {
      */
     public static void main(String[] args) {
         testIter();
-        System.out.println("---------------");
         testSplit(false);
-        System.out.println("---------------");
         testSplit(true);
     }
 }

@@ -1,0 +1,33 @@
+﻿<html>
+  <head>
+    <title>Второй тест</title>
+    <script>
+    
+    function getCountryName(code) {
+      xhr = new XMLHttpRequest();
+      xhr.onreadystatechange =
+        function () {
+          if (xhr.readyState == 4) {
+            fillResult(xhr.status == 200 ? xhr.responseText : "Ошибка " + xhr.status + "!");
+          }
+        };
+      xhr.open("GET", "http://localhost:8081/countries/name/" + code.toUpperCase(), true);
+      xhr.send();
+    }
+    
+    function fillResult(result) {
+      document.getElementById("result").innerHTML = result;
+    }
+    
+    function onClick() {
+      var countryCode = document.getElementById("countryCode").value;
+      getCountryName(countryCode);
+    }
+    
+    </script>
+  </head>
+  <body>
+    <p>Код страны: <input id="countryCode" type="text"/> <input type="button" onclick="onClick();" value="Инфо"/></p>
+    <p id="result"></p>
+  </body>
+</html>

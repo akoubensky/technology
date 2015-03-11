@@ -1,0 +1,45 @@
+﻿<html>
+  <head>
+    <title>Четвертый тест</title>
+    <script>
+    
+    function getCountryName(code) {
+      xhr = new XMLHttpRequest();
+      xhr.onreadystatechange =
+        function () {
+          if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+              fillResult(xhr.responseXML);
+            } else {
+              alert("Ошибка " + xhr.status + "!");
+            }
+          }
+        };
+      xhr.open("GET", "http://localhost:8081/countries/xml/" + code.toUpperCase(), true);
+      xhr.send();
+    }
+    
+    function fillResult(xml) {
+      document.getElementById('name').innerHTML = xml.getElementsByTagName('name')[0].firstChild.nodeValue;
+      document.getElementById('iso').innerHTML = xml.getElementsByTagName('iso')[0].firstChild.nodeValue;
+      document.getElementById('english').innerHTML = xml.getElementsByTagName('english')[0].firstChild.nodeValue;
+      document.getElementById('location').innerHTML = xml.getElementsByTagName('location')[0].firstChild.nodeValue;
+    }
+    
+    function onClick() {
+      var countryCode = document.getElementById("countryCode").value;
+      getCountryName(countryCode);
+    }
+    
+    </script>
+  </head>
+  <body>
+    <p>Код страны: <input id="countryCode" type="text"/> <input type="button" onclick="onClick();" value="Инфо"/></p>
+    <table>
+    <tr><td>Название: </td><td id="name">-</td></tr>
+    <tr><td>Код ISO: </td><td id="iso">-</td></tr>
+    <tr><td>Название (по-английски): </td><td id="english">-</td></tr>
+    <tr><td>Часть света: </td><td id="location">-</td></tr>
+    </table>
+  </body>
+</html>

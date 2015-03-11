@@ -1,0 +1,28 @@
+﻿<html>
+  <head>
+    <title>Первый тест</title>
+    <script>
+    
+    function getCountryName(code) {
+      xhr = new XMLHttpRequest();
+      xhr.onreadystatechange =
+        function () {
+          if (xhr.readyState == 4) {
+            alert(xhr.status == 200 ? xhr.responseText : "Ошибка " + xhr.status + "!");
+          }
+        };
+      xhr.open("GET", "http://localhost:8081/countries/name/" + code.toUpperCase(), true);
+      xhr.send();
+    }
+    
+    function onClick() {
+      var countryCode = document.getElementById("countryCode").value;
+      getCountryName(countryCode);
+    }
+    
+    </script>
+  </head>
+  <body>
+    <p>Код страны: <input id="countryCode" type="text"/> <input type="button" onclick="onClick();" value="Инфо"/></p>
+  </body>
+</html>

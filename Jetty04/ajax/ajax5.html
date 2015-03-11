@@ -1,0 +1,46 @@
+﻿<html>
+  <head>
+    <title>Пятый тест</title>
+    <script>
+    
+    function getCountryName(code) {
+      xhr = new XMLHttpRequest();
+      xhr.onreadystatechange =
+        function () {
+          if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+              fillResult(xhr.responseText);
+            } else {
+              alert("Ошибка " + xhr.status + "!");
+            }
+          }
+        };
+      xhr.open("GET", "http://localhost:8081/countries/json/" + code.toUpperCase(), true);
+      xhr.send();
+    }
+    
+    function fillResult(result) {
+      var json = eval("(" + result + ")");
+      document.getElementById('name').innerHTML = json.name;
+      document.getElementById('iso').innerHTML = json.iso;
+      document.getElementById('english').innerHTML = json.englishName;
+      document.getElementById('location').innerHTML = json.continent;
+    }
+    
+    function onClick() {
+      var countryCode = document.getElementById("countryCode").value;
+      getCountryName(countryCode);
+    }
+    
+    </script>
+  </head>
+  <body>
+    <p>Код страны: <input id="countryCode" type="text"/> <input type="button" onclick="onClick();" value="Инфо"/></p>
+    <table>
+    <tr><td>Название: </td><td id="name">-</td></tr>
+    <tr><td>Код ISO: </td><td id="iso">-</td></tr>
+    <tr><td>Название (по-английски): </td><td id="english">-</td></tr>
+    <tr><td>Часть света: </td><td id="location">-</td></tr>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+
+.border {
+    -fx-border-color: red;
+	-fx-border-insets: 5;
+	-fx-border-width: 5;
+	-fx-border-style: solid;
+}
+
+.background {
+	-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, aqua, green, white);
+	-fx-background-radius: 10 0 5 15;
+}

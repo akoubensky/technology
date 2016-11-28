@@ -53,6 +53,51 @@ public final class StreamUtil {
 		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(itRes, 0), false);
 	}
 	
+	/**
+	 * Реализация слияния двух упорядоченных потоков
+	 * @param s1	Первый поток
+	 * @param s2	Второй поток
+	 * @return		Упорядоченный поток - результат слияния.
+	 */
+	public static <T extends Comparable<T>> Stream<T> merge(Stream<T> s1, Stream<T> s2) {
+		class Merger {
+			T e1, e2;
+			Iterator<T> it1, it2;
+			Merger(Iterator<T> it1, Iterator<T> it2) {
+				this.it1 = it1;
+				this.it2 = it2;
+				if (it1.hasNext()) e1 = it1.next();
+				if (it2.hasNext()) e2 = it2.next();
+			}
+			private T next(Iterator<T> it) { return it.hasNext() ? it.next() : null; }
+			public Iterator<T> iterator() {
+				return new Iterator<T>() {
+					public boolean hasNext() {
+						return e1 != null || e2!= null;
+					}
+					public T next() {
+						T result;
+						if (e1 == null) {
+							result = e2;
+							e2 = next(it2);
+						} else if (e2 == null || e1.compare(e2) < 0) {
+							result = e1;
+							e1 = next(it1);
+						} else {
+							result = e2;
+							e2 = next(it2);
+						}
+						return result;
+					}
+				};
+			}
+		}
+		return StreamSupport.stream(
+			Spliterators.spliteratorUnknownSize(
+				new Merger(s1.iterator(), s2.iterator()).iterator(), 0),
+			false);
+	}
+	
 	public static void main(String[] args) {
 		Stream<Integer> s1 = Arrays.asList(0, 1, 1, 2, 3, 5, 8, 13, 21).stream();
 		Stream<Integer> s2 = Arrays.asList(1, 1, 2, 3, 5, 8, 13, 21).stream();
@@ -68,5 +113,10 @@ public final class StreamUtil {
 		// Одним потоком не обойтись: после исполнения skip(1) поток уже не прочитать с начала!
 //		s1 = Arrays.asList(0, 1, 1, 2, 3, 5, 8, 13, 21).stream();
 //		zip(Integer::sum, s1, s1.skip(1)).forEach(x -> System.out.print(" " + x));
+		
+		s1 = Stream.of(0, 2, 4, 6, 7, 9, 11);
+		s2 = Stream.of(2, 3, 5, 5, 8, 10, 12);
+		Stream<Integer> stream3 = merge(s1, s2);
+		System.out.println(stream3.collect(Collectors.toList()));
 	}
 }

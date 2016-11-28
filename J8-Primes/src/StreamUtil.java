@@ -60,7 +60,7 @@ public final class StreamUtil {
 	 * @return		Упорядоченный поток - результат слияния.
 	 */
 	public static <T extends Comparable<T>> Stream<T> merge(Stream<T> s1, Stream<T> s2) {
-		class Merger {
+		class Merger<T extends Comparable<T>> {
 			T e1, e2;
 			Iterator<T> it1, it2;
 			Merger(Iterator<T> it1, Iterator<T> it2) {
@@ -69,7 +69,7 @@ public final class StreamUtil {
 				if (it1.hasNext()) e1 = it1.next();
 				if (it2.hasNext()) e2 = it2.next();
 			}
-			private T next(Iterator<T> it) { return it.hasNext() ? it.next() : null; }
+			private T nextElem(Iterator<T> it) { return it.hasNext() ? it.next() : null; }
 			public Iterator<T> iterator() {
 				return new Iterator<T>() {
 					public boolean hasNext() {
@@ -79,13 +79,13 @@ public final class StreamUtil {
 						T result;
 						if (e1 == null) {
 							result = e2;
-							e2 = next(it2);
-						} else if (e2 == null || e1.compare(e2) < 0) {
+							e2 = nextElem(it2);
+						} else if (e2 == null || e1.compareTo(e2) < 0) {
 							result = e1;
-							e1 = next(it1);
+							e1 = nextElem(it1);
 						} else {
 							result = e2;
-							e2 = next(it2);
+							e2 = nextElem(it2);
 						}
 						return result;
 					}
@@ -99,17 +99,15 @@ public final class StreamUtil {
 	}
 	
 	public static void main(String[] args) {
-		Stream<Integer> s1 = Arrays.asList(0, 1, 1, 2, 3, 5, 8, 13, 21).stream();
-		Stream<Integer> s2 = Arrays.asList(1, 1, 2, 3, 5, 8, 13, 21).stream();
+		Stream<Integer> s1 = Stream.of(0, 1, 1, 2, 3, 5, 8, 13, 21);
+		Stream<Integer> s2 = Stream.of(1, 1, 2, 3, 5, 8, 13, 21);
 		Stream<Integer> stream1 = zip(Integer::sum, s1, s2);
-		stream1.forEach(x -> System.out.print(" " + x));
-		System.out.println();
+		System.out.println(stream1.collect(Collectors.toList()));
 		
-		s1 = Arrays.asList(0, 1, 1, 2, 3, 5, 8, 13, 21).stream();
-		s2 = Arrays.asList(1, 1, 2, 3, 5, 8, 13, 21).stream();
+		s1 = Stream.of(0, 1, 1, 2, 3, 5, 8, 13, 21);
+		s2 = Stream.of(1, 1, 2, 3, 5, 8, 13, 21);
 		Stream<Integer> stream2 = zipSplit(Integer::sum, s1, s2);
-		stream2.forEach(x -> System.out.print(" " + x));
-		System.out.println();
+		System.out.println(stream2.collect(Collectors.toList()));
 		// Одним потоком не обойтись: после исполнения skip(1) поток уже не прочитать с начала!
 //		s1 = Arrays.asList(0, 1, 1, 2, 3, 5, 8, 13, 21).stream();
 //		zip(Integer::sum, s1, s1.skip(1)).forEach(x -> System.out.print(" " + x));

@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+    <head>
+        <title>My canvas</title>
+    </head>
+    <body>
+        <div id="canvas" style="text-align: center; position: fixed; left: 5px; top: 5px; width: 700px; height: 500px; border: 2px solid black;">
+            <p><font face="Arial" weight="bold" size="36pt">Привет семье!</font></p>
+        </div>
+        <script>
+            var canvas = document.createElement('canvas');
+            var posX = 30, posY = 100;
+            var dX = 1, dY = 1;
+            document.getElementById('canvas').appendChild(canvas);
+            canvas.style.position = "fixed"; 
+            canvas.style.left = posX + "px"; 
+            canvas.style.top = posY + "px";
+            canvas.width = 150;
+            canvas.height = 150;
+            var ctx = canvas.getContext('2d');
+            ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+            ctx.fillRect(0,0,100,100);
+            setInterval(
+                function(){ 
+                    posX += dX; posY += dY;
+                    if (posX > 605) dX = -1;
+                    if (posX < 5) dX = 1;
+                    if (posY > 405) dY = -1;
+                    if (posY < 5) dY = 1;
+                    canvas.style.left = posX + "px";
+                    canvas.style.top = posY + "px";
+                }, 10);
+        </script>
+    </body>
+</html>

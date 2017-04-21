@@ -322,8 +322,7 @@ public class BSTree<T extends Comparable<T>> implements Iterable<T> {
      */
     private static void testSplit(boolean parallel) {
         BSTree<Integer> tree = buildTree(1, 300);
-        Stream<Integer> stream = tree.stream();
-        if (parallel) stream = stream.parallel();
+        Stream<Integer> stream = parallel ? tree.streamParallel() : tree.stream();
         Printer<Integer> printer = new Printer<>();
         stream.forEach(printer);
         System.out.println();

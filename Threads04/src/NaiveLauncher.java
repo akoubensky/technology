@@ -13,6 +13,7 @@ public class NaiveLauncher {
 		// Поток, записывающий 10000 элементов в очередь
 		Thread supplier = new Thread(() -> {
 			for (int i = 1; i <= 10000; i++) {
+				while (list.size() > 50) ;
 				if (i % 1000 == 0) {
 					System.out.println("Added: " + i);
 				}

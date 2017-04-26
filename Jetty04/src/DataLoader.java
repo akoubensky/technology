@@ -25,7 +25,7 @@ public class DataLoader {
 		try {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder(); 
-			doc = db.parse(new File("countries.xml"));
+			doc = db.parse(new File("Jetty04/countries.xml"));
 		} catch (SAXException | IOException | ParserConfigurationException e) {
 			e.printStackTrace();
 			return;

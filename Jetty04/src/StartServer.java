@@ -12,7 +12,7 @@ public class StartServer {
         Server server = new Server(8081);
         HandlerList handlers = new HandlerList();
         ResourceHandler resourceHandler = new ResourceHandler();
-        resourceHandler.setResourceBase("./ajax");
+        resourceHandler.setResourceBase("./Jetty04/ajax");
         ServletHandler countriesHandler = new ServletHandler();
         countriesHandler.addServletWithMapping(NameServlet.class, "/countries/name/*");
         countriesHandler.addServletWithMapping(TxtServlet.class, "/countries/txt/*");

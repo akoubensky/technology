@@ -22,7 +22,7 @@ public class MaxTransaction {
     public static void generateRandomData(String fileName) throws FileNotFoundException {
         Random rnd = new Random();
         String[] names = {"Smith", "Brown", "Doe", "Pupkin", "Linkoln", "Kern", "Kuchek"};
-        PrintStream ps = new PrintStream(new File(fileName));
+        PrintStream ps = new PrintStream(fileName);
         ps.println("Name\t\tSum\n");
         for (int i = 0; i < 10000; ++i) {
             ps.print(names[rnd.nextInt(names.length)]);
@@ -39,14 +39,11 @@ public class MaxTransaction {
      * @return           Поток строк из файла с указанным именем.
      * @throws FileNotFoundException    Если файл с указанным именем не найден.
      */
-    private static Stream<String> getStreamFromMemory(String fileName) throws FileNotFoundException {
+    private static Stream<String> getStreamFromScanner(String fileName) throws FileNotFoundException {
         // Reading data
         Scanner scanner = new Scanner(new File(fileName));
-        List<String> input = new ArrayList<>();
         scanner.useDelimiter("\n");
-        scanner.forEachRemaining(input::add);
-        scanner.close();
-        return input.stream();
+        return scanner.tokens();
     }
 
     /**
@@ -89,7 +86,22 @@ public class MaxTransaction {
         String nameToAnalyze = args.length > 1 ? args[1] : "Pupkin";
 
         generateRandomData(fileName);
-        System.out.println(getMaximum(getStreamFromMemory(fileName), nameToAnalyze));
-        System.out.println(getMaximum(getStreamFromFile(fileName).parallel(), nameToAnalyze));
+        long start;
+        double maximum;
+
+        start = System.currentTimeMillis();
+        maximum = getMaximum(getStreamFromFile(fileName), nameToAnalyze);
+        System.out.format("Elapsed millis from file: %d, found result: %g\n",
+                System.currentTimeMillis() - start, maximum);
+
+        start = System.currentTimeMillis();
+        maximum = getMaximum(getStreamFromFile(fileName), nameToAnalyze);
+        System.out.format("Elapsed millis from file: %d, found result: %g\n",
+                System.currentTimeMillis() - start, maximum);
+
+        start = System.currentTimeMillis();
+        maximum = getMaximum(getStreamFromScanner(fileName), nameToAnalyze);
+        System.out.format("Elapsed millis from scanner: %d, found result: %g\n",
+                System.currentTimeMillis() - start, maximum);
     }
 }

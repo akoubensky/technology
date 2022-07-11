@@ -11,10 +11,10 @@ import java.util.ArrayList;
  */
 public class Position {
 	// Массив, представляющий расстановку ферзей на первых set горизонталях
-	private ArrayList<Integer> board = new ArrayList<>();
+	private final ArrayList<Integer> board = new ArrayList<>();
 	
     // Пустая позиция
-	public static Position EMPTY = new Position();
+	public final static Position EMPTY = new Position();
 	
     /**
      * Конструктор пустой позиции
@@ -32,7 +32,7 @@ public class Position {
      * не "конфликтовал" с уже поставленными ферзями.
 	 * @param row	Горизонталь, на которой будет стоять новый ферзь.
 	 * @param col	Вертикаль, на которой будет стоять новый ферзь.
-	 * @return
+	 * @return		true, если ферзя поставить можно, false в противном случае
 	 */
 	public boolean maySet(int row, int col) {
 		for (int r = 0; r < board.size(); r++) {
@@ -49,8 +49,7 @@ public class Position {
 	 */
 	public void printPos() {
 		int width = board.size();
-		for (int r = 0; r < width; r++) {
-			int c = board.get(r);
+		for (int c : board) {
 			for (int p = 0; p < c; p++) {
 				System.out.print(" .");
 			}
@@ -65,7 +64,7 @@ public class Position {
     /**
      * Генерирует новую позицию, ставя ферзя на первую свободную горизонталь в позицию,
      * заданную аргументом.
-     * @param y    Номер вертикали, на которую ставится новый ферзь.
+     * @param newCol    Номер вертикали, на которую ставится новый ферзь.
      * @return     Новая позиция, в которой на одного ферзя больше, чем в исходной.
      */
 	public Position next(int newCol) {

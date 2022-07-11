@@ -1,7 +1,7 @@
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Spliterators;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -38,7 +38,7 @@ public final class StreamUtil {
 	public static <T1,T2,R> Stream<R> zipSplit(BiFunction<T1, T2, R> func, Stream<T1> s1, Stream<T2> s2) {
 		Iterator<T1> it1 = s1.iterator();
 		Iterator<T2> it2 = s2.iterator();
-		Iterator<R> itRes = new Iterator<R>() {
+		Iterator<R> itRes = new Iterator<>() {
 
 			@Override
 			public boolean hasNext() {
@@ -60,23 +60,24 @@ public final class StreamUtil {
 	 * @return		Упорядоченный поток - результат слияния.
 	 */
 	public static <T extends Comparable<T>> Stream<T> merge(Stream<T> s1, Stream<T> s2) {
-		class Merger<T extends Comparable<T>> {
-			T e1, e2;
-			Iterator<T> it1, it2;
-			Merger(Iterator<T> it1, Iterator<T> it2) {
+		class Merger<R extends Comparable<R>> {
+			R e1, e2;
+			final Iterator<R> it1, it2;
+			Merger(Iterator<R> it1, Iterator<R> it2) {
 				this.it1 = it1;
 				this.it2 = it2;
 				if (it1.hasNext()) e1 = it1.next();
 				if (it2.hasNext()) e2 = it2.next();
 			}
-			private T nextElem(Iterator<T> it) { return it.hasNext() ? it.next() : null; }
-			public Iterator<T> iterator() {
-				return new Iterator<T>() {
+			private R nextElem(Iterator<R> it) { return it.hasNext() ? it.next() : null; }
+			public Iterator<R> iterator() {
+				return new Iterator<>() {
 					public boolean hasNext() {
-						return e1 != null || e2!= null;
+						return e1 != null || e2 != null;
 					}
-					public T next() {
-						T result;
+
+					public R next() {
+						R result;
 						if (e1 == null) {
 							result = e2;
 							e2 = nextElem(it2);
@@ -94,7 +95,7 @@ public final class StreamUtil {
 		}
 		return StreamSupport.stream(
 			Spliterators.spliteratorUnknownSize(
-				new Merger(s1.iterator(), s2.iterator()).iterator(), 0),
+				new Merger<T>(s1.iterator(), s2.iterator()).iterator(), 0),
 			false);
 	}
 	
